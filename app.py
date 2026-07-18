@@ -6,14 +6,14 @@ import plotly.graph_objects as go
 import plotly.express as px
 import os
 
-# --- 1. PAGE CONFIGURATION ---
+
 st.set_page_config(
     page_title="MedPulse AI | Clinical Decision Support System", 
     page_icon="🏥", 
     layout="wide"
 )
 
-# --- 2. ADVANCED GLASSMORPHIC UI STYLING ---
+
 st.markdown("""
     <style>
     .stApp {
@@ -61,7 +61,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 3. MODEL LOADERS ---
+
 @st.cache_resource
 def load_models():
     models = {}
@@ -74,7 +74,7 @@ def load_models():
 
 models = load_models()
 
-# --- 4. SIDEBAR CONTROLS ---
+
 with st.sidebar:
     st.image("https://img.icons8.com/color/96/medical-heart.png", width=65)
     st.title("MedPulse Portal")
@@ -83,8 +83,7 @@ with st.sidebar:
     st.markdown("---")
     
     with st.expander("👤 Patient Demographics", expanded=True):
-        name = st.text_input("Full Name", "")
-        patient_id = st.text_input("Patient ID", "")
+        
         age = st.slider("Age (Years)", 1, 100, 45, help="Patient age in completed years.")
         gender = st.radio("Gender", ["Male", "Female", "Other"], horizontal=True)
 
@@ -105,7 +104,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# --- 6. FEATURE INPUT PREPARATION ---
+
 if selected_disease == "Diabetes Prediction":
     with st.sidebar.expander("🩺 Diabetes Clinical Vitals", expanded=True):
         pregnancies = st.number_input("Pregnancies", 0, 20, 1 if gender == "Female" else 0, help="Number of times pregnant.")
@@ -144,13 +143,12 @@ elif selected_disease == "Heart Disease Prediction":
     feature_list = ['Age', 'Gender', 'Chest Pain', 'Resting BP', 'Cholesterol', 'FBS', 'Rest ECG', 'Max HR', 'Ex Angina', 'Oldpeak', 'Slope', 'CA', 'Thal']
     active_model = models['Heart Disease']
 
-# --- Initialize session states ---
 if 'prob' not in st.session_state:
     st.session_state['prob'] = 0.0
 if 'analyzed' not in st.session_state:
     st.session_state['analyzed'] = False
 
-# --- 7. DASHBOARD TOP ROW ---
+
 col_main, col_chart = st.columns([1.1, 0.9])
 
 with col_main:
@@ -164,14 +162,14 @@ with col_main:
                 pred = active_model.predict(input_data)
                 is_high_risk = pred[0] in [1, '1']
                 
-                # Probability Extractor
+              
                 if hasattr(active_model, "predict_proba"):
                     probs = active_model.predict_proba(input_data)[0]
                     prob = float(probs[1]) * 100 if len(probs) > 1 else (75.0 if is_high_risk else 15.0)
                 else:
                     prob = 75.0 if is_high_risk else 15.0
 
-                # Synchronize session state immediately
+
                 st.session_state['prob'] = prob
                 st.session_state['risk_title'] = "HIGH RISK DETECTED" if is_high_risk else "LOW RISK DETECTED"
                 st.session_state['is_high_risk'] = is_high_risk
@@ -180,7 +178,7 @@ with col_main:
             except Exception as e:
                 st.error(f"Prediction Mismatch Error: {e}")
 
-    # Display results if analyzed
+
     if st.session_state.get('analyzed', False):
         risk_title = st.session_state['risk_title']
         prob = st.session_state['prob']
@@ -243,7 +241,7 @@ with col_chart:
     )
     st.plotly_chart(fig_gauge, use_container_width=True)
 
-# --- 8. BOTTOM ROW: ANALYTICS & FEATURE IMPORTANCE ---
+
 st.markdown("---")
 col_imp, col_radar = st.columns([1, 1])
 
@@ -287,7 +285,7 @@ with col_radar:
     )
     st.plotly_chart(fig_radar, use_container_width=True)
 
-# --- 9. ACADEMIC EVALUATION BENCHMARKS (SIDEBAR) ---
+
 st.sidebar.markdown("---")
 with st.sidebar.expander("📈 Model Validation Benchmarks"):
     st.markdown("**Algorithm:** Random Forest Classifier")
