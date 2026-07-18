@@ -83,8 +83,8 @@ with st.sidebar:
     st.markdown("---")
     
     with st.expander("👤 Patient Demographics", expanded=True):
-        name = st.text_input("Full Name", "John Doe")
-        patient_id = st.text_input("Patient ID", "PX-9042")
+        name = st.text_input("Full Name", "")
+        patient_id = st.text_input("Patient ID", "")
         age = st.slider("Age (Years)", 1, 100, 45, help="Patient age in completed years.")
         gender = st.radio("Gender", ["Male", "Female", "Other"], horizontal=True)
 
