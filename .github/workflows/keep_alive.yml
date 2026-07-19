@@ -2,8 +2,8 @@ name: Keep Streamlit App Awake
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # Runs automatically every 6 hours
-  workflow_dispatch:      # Allows you to run it manually from GitHub if needed
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 jobs:
   ping-app:
