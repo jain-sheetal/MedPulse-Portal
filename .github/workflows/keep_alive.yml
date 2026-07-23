@@ -1,13 +1,25 @@
-name: Keep Streamlit App Awake
+name: Wake Streamlit App
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
-  workflow_dispatch:
+    - cron: '0 */4 * * *'  # Runs automatically every 4 hours
+  workflow_dispatch:       # Allows manual trigger from GitHub UI
 
 jobs:
-  ping-app:
+  wake-up:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Streamlit Instance
-        run: curl -s -o /dev/null -w "%{http_code}\n" https://medpulse-app.streamlit.app/
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install selenium webdriver-manager
+
+      - name: Run Wake-Up Script
+        run: python wake_app.py
