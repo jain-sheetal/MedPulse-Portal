@@ -1,9 +1,14 @@
-# 🏥MedPulse AI — Clinical Decision Support System
+# 🏥 MedPulse AI — Clinical Decision Support System
+
+[![Live Demo](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://medpulse-app.streamlit.app/)
+[![Python](https://img.shields.io/badge/Python-3.10-blue)](https://python.org)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
 
 MedPulse AI is an end-to-end medical web application designed to predict early-stage risk stratification for Diabetes and Cardiovascular diseases. While many clinical machine learning tools operate as opaque "black boxes," MedPulse AI integrates Explainable AI (XAI) features to provide clear visual insights into the underlying clinical biomarkers driving each predictive score.
 
 ## 🚀 Live Demo
-Access the deployed application here: **https://medpulse-app.streamlit.app/**
+Access the live deployed application here: **[https://medpulse-app.streamlit.app/](https://medpulse-app.streamlit.app/)**
+
 
 ---
 
@@ -75,4 +80,10 @@ The machine learning models were optimized using **5-Fold Cross-Validation** to 
 ## 👩‍💻 Developed By  
 
 **Sheetal Jain**  
-B.Tech – Artificial Intelligence & Data Science  
+*B.Tech in Artificial Intelligence & Data Science (2023–2027)*  
+Pranveer Singh Institute of Technology (PSIT), Kanpur  
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/sheetal-jain-1604sj)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/jain-sheetal)
+[![LeetCode](https://img.shields.io/badge/LeetCode-FFA116?style=flat-square&logo=LeetCode&logoColor=black)](https://leetcode.com/u/sheetal-jain)
+[![Email](https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:jainsheetal.sj16@gmail.com)
