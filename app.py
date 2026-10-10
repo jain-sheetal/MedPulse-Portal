@@ -1036,21 +1036,65 @@ with tab_batch:
 
     batch_model = models.get('Diabetes' if batch_disease == "Diabetes Prediction" else ('Heart Disease' if batch_disease == "Heart Disease Prediction" else 'Kidney Disease'))
 
-    # Quick 1-click Demo Cohort Generator for recruiters
+    # Clear visual explanation for users
+    st.markdown("""
+    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 14px; padding: 14px 18px; margin-bottom: 18px;">
+        <span style="color: #38bdf8; font-weight: 700; font-size: 14px;">💡 How Batch Screening Works:</span>
+        <p style="color: #94a3b8; font-size: 13px; margin: 4px 0 0 0;">
+            You can either <b>(Option A)</b> click the Instant Demo button to run built-in simulated hospital test data without uploading anything, OR <b>(Option B)</b> drag and drop your own CSV file below!
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
     col_demo, col_upload = st.columns([1, 1.2])
+    
     with col_demo:
-        st.markdown("<b style='color: #cbd5e1;'>🧪 Instant Demo:</b>", unsafe_allow_html=True)
-        load_demo_cohort = st.button("⚡ Generate & Screen 8-Patient Demo Cohort", use_container_width=True)
+        st.markdown("""
+        <div class="glass-card" style="height: 100%;">
+            <b style="color: #38bdf8; font-size: 15px;">⚡ Option A: Instant Demo Cohort</b>
+            <p style="color: #94a3b8; font-size: 12px; margin: 6px 0 14px 0;">
+                No upload needed! Evaluates 8 pre-configured sample test patients directly in-memory to test the batch AI pipeline immediately.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        load_demo_cohort = st.button("⚡ Run 8-Patient Demo Cohort", use_container_width=True)
 
     with col_upload:
-        st.markdown("<b style='color: #cbd5e1;'>📁 Custom CSV:</b>", unsafe_allow_html=True)
+        st.markdown("""
+        <div class="glass-card" style="height: 100%;">
+            <b style="color: #38bdf8; font-size: 15px;">📁 Option B: Upload Your Own CSV</b>
+            <p style="color: #94a3b8; font-size: 12px; margin: 6px 0 14px 0;">
+                Upload your own CSV containing real patient records to screen your cohort in bulk.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
         uploaded_file = st.file_uploader("Upload Cohort Data (CSV)", type=['csv'])
 
-    cohort_to_process = None
+        # Generate template for download
+        if batch_disease == "Diabetes Prediction":
+            template_df = pd.DataFrame(columns=['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age'])
+        elif batch_disease == "Heart Disease Prediction":
+            template_df = pd.DataFrame(columns=['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'])
+        else:
+            template_df = pd.DataFrame(columns=['Bp', 'Sg', 'Al', 'Su', 'Rbc', 'Bu', 'Sc', 'Sod', 'Pot', 'Hemo', 'Wbcc', 'Rbcc', 'Htn'])
+        
+        st.download_button(
+            label="📥 Download Blank CSV Template",
+            data=template_df.to_csv(index=False).encode('utf-8'),
+            file_name=f"Template_{batch_disease.replace(' ', '_')}.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
+
+    # Session state for batch results
+    if 'batch_source' not in st.session_state:
+        st.session_state['batch_source'] = None
+    if 'batch_cohort' not in st.session_state:
+        st.session_state['batch_cohort'] = None
 
     if load_demo_cohort:
         if batch_disease == "Diabetes Prediction":
-            cohort_to_process = pd.DataFrame([
+            st.session_state['batch_cohort'] = pd.DataFrame([
                 {'Pregnancies': 1, 'Glucose': 88, 'BloodPressure': 66, 'SkinThickness': 20, 'Insulin': 75, 'BMI': 21.5, 'DiabetesPedigreeFunction': 0.22, 'Age': 28},
                 {'Pregnancies': 5, 'Glucose': 168, 'BloodPressure': 92, 'SkinThickness': 35, 'Insulin': 210, 'BMI': 37.2, 'DiabetesPedigreeFunction': 1.15, 'Age': 54},
                 {'Pregnancies': 0, 'Glucose': 95, 'BloodPressure': 72, 'SkinThickness': 18, 'Insulin': 80, 'BMI': 23.0, 'DiabetesPedigreeFunction': 0.31, 'Age': 32},
@@ -1061,7 +1105,7 @@ with tab_batch:
                 {'Pregnancies': 6, 'Glucose': 192, 'BloodPressure': 94, 'SkinThickness': 38, 'Insulin': 250, 'BMI': 38.6, 'DiabetesPedigreeFunction': 1.22, 'Age': 58},
             ])
         elif batch_disease == "Heart Disease Prediction":
-            cohort_to_process = pd.DataFrame([
+            st.session_state['batch_cohort'] = pd.DataFrame([
                 {'age': 45, 'sex': 1, 'cp': 2, 'trestbps': 118, 'chol': 185, 'fbs': 0, 'restecg': 0, 'thalach': 168, 'exang': 0, 'oldpeak': 0.2, 'slope': 2, 'ca': 0, 'thal': 2},
                 {'age': 62, 'sex': 1, 'cp': 0, 'trestbps': 165, 'chol': 295, 'fbs': 1, 'restecg': 1, 'thalach': 112, 'exang': 1, 'oldpeak': 3.1, 'slope': 0, 'ca': 2, 'thal': 3},
                 {'age': 38, 'sex': 0, 'cp': 1, 'trestbps': 115, 'chol': 190, 'fbs': 0, 'restecg': 0, 'thalach': 172, 'exang': 0, 'oldpeak': 0.0, 'slope': 2, 'ca': 0, 'thal': 2},
@@ -1072,7 +1116,7 @@ with tab_batch:
                 {'age': 64, 'sex': 0, 'cp': 0, 'trestbps': 160, 'chol': 285, 'fbs': 1, 'restecg': 1, 'thalach': 118, 'exang': 1, 'oldpeak': 2.9, 'slope': 0, 'ca': 2, 'thal': 3},
             ])
         else: # Kidney Disease
-            cohort_to_process = pd.DataFrame([
+            st.session_state['batch_cohort'] = pd.DataFrame([
                 {'Bp': 75.0, 'Sg': 1.020, 'Al': 0.0, 'Su': 0.0, 'Rbc': 1.0, 'Bu': 28.0, 'Sc': 0.9, 'Sod': 140.0, 'Pot': 4.2, 'Hemo': 15.2, 'Wbcc': 7500.0, 'Rbcc': 5.1, 'Htn': 0.0},
                 {'Bp': 95.0, 'Sg': 1.010, 'Al': 3.0, 'Su': 2.0, 'Rbc': 0.0, 'Bu': 85.0, 'Sc': 3.4, 'Sod': 128.0, 'Pot': 5.6, 'Hemo': 8.4, 'Wbcc': 13500.0, 'Rbcc': 3.2, 'Htn': 1.0},
                 {'Bp': 70.0, 'Sg': 1.025, 'Al': 0.0, 'Su': 0.0, 'Rbc': 1.0, 'Bu': 24.0, 'Sc': 0.8, 'Sod': 142.0, 'Pot': 4.0, 'Hemo': 16.0, 'Wbcc': 6800.0, 'Rbcc': 5.3, 'Htn': 0.0},
@@ -1082,12 +1126,18 @@ with tab_batch:
                 {'Bp': 75.0, 'Sg': 1.020, 'Al': 0.0, 'Su': 0.0, 'Rbc': 1.0, 'Bu': 30.0, 'Sc': 0.9, 'Sod': 141.0, 'Pot': 4.3, 'Hemo': 15.0, 'Wbcc': 7200.0, 'Rbcc': 5.0, 'Htn': 0.0},
                 {'Bp': 95.0, 'Sg': 1.005, 'Al': 3.0, 'Su': 2.0, 'Rbc': 0.0, 'Bu': 92.0, 'Sc': 3.8, 'Sod': 126.0, 'Pot': 5.7, 'Hemo': 8.0, 'Wbcc': 14000.0, 'Rbcc': 3.0, 'Htn': 1.0},
             ])
+        st.session_state['batch_source'] = "Demo Cohort (Pre-configured 8 Test Patients)"
 
     elif uploaded_file is not None:
         try:
-            cohort_to_process = pd.read_csv(uploaded_file)
+            st.session_state['batch_cohort'] = pd.read_csv(uploaded_file)
+            st.session_state['batch_source'] = f"Uploaded File '{uploaded_file.name}'"
         except Exception as e:
             st.error(f"Failed to parse uploaded CSV: {e}")
+
+    # Process and show results
+    cohort_to_process = st.session_state.get('batch_cohort')
+    batch_source = st.session_state.get('batch_source')
 
     if cohort_to_process is not None:
         if batch_model is None:
@@ -1102,7 +1152,17 @@ with tab_batch:
                     cohort_to_process['Risk_Probability'] = [f"{float(pr[1])*100:.1f}%" for pr in probas]
 
                 high_count = sum(1 for p in preds if p in [1, '1'])
-                st.success(f"✅ Screened {len(cohort_to_process)} patient profiles successfully: **{high_count} High Risk Flagged**, **{len(cohort_to_process)-high_count} Normal**.")
+                
+                st.markdown("---")
+                col_info, col_reset = st.columns([3, 1])
+                with col_info:
+                    st.success(f"✅ Screened {len(cohort_to_process)} patient profiles ({batch_source}): **{high_count} High Risk**, **{len(cohort_to_process)-high_count} Normal**.")
+                with col_reset:
+                    if st.button("🔄 Clear / Reset Table", use_container_width=True):
+                        st.session_state['batch_cohort'] = None
+                        st.session_state['batch_source'] = None
+                        st.rerun()
+
                 st.dataframe(cohort_to_process, use_container_width=True)
 
                 out_csv = cohort_to_process.to_csv(index=False).encode('utf-8')
