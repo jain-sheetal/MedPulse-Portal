@@ -1,0 +1,6 @@
+Timestamp,Patient_ID,Patient_Name,Age,Gender,Disease_Module,Risk_Result,Risk_Probability,Key_Vitals
+2026-10-10 14:15:20,PX-9042,Sheetal Jain,45,Female,Diabetes Prediction,LOW RISK / NORMAL PROFILE,14.5%,Glucose: 95 mg/dL | Blood Pressure: 70 mmHg | BMI: 22.5 kg/m² | Serum Insulin: 75 mu U/ml
+2026-10-10 11:32:05,PX-8821,Kratarth Srivastava,52,Male,Heart Disease Prediction,HIGH CLINICAL RISK DETECTED,87.2%,Resting Blood Pressure: 155 mmHg | Serum Cholesterol: 275 mg/dL | Exercise Angina: Yes | ST Depression: 2.4 mm
+2026-10-09 16:48:12,PX-7104,Anita Sharma,60,Female,Chronic Kidney Disease,HIGH CLINICAL RISK DETECTED,92.0%,Serum Creatinine: 2.8 mg/dL | Blood Urea: 76.0 mg/dL | Hemoglobin: 9.2 g/dL | Albumin: 3 (Score)
+2026-10-09 10:20:44,PX-5501,Rohan Verma,34,Male,Diabetes Prediction,LOW RISK / NORMAL PROFILE,12.0%,Glucose: 88 mg/dL | Blood Pressure: 68 mmHg | BMI: 21.8 kg/m² | Serum Insulin: 65 mu U/ml
+2026-10-08 15:05:30,PX-4099,Vikram Malhotra,58,Male,Heart Disease Prediction,LOW RISK / NORMAL PROFILE,18.0%,Resting Blood Pressure: 118 mmHg | Serum Cholesterol: 185 mg/dL | Exercise Angina: No | ST Depression: 0.4 mm
