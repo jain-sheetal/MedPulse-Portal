@@ -408,7 +408,7 @@ def generate_pdf_report(patient_name, patient_id, age, gender, disease, risk_tit
 with st.sidebar:
     st.image("https://img.icons8.com/color/96/medical-heart.png", width=62)
     st.markdown("<h2 style='margin: 0; color: #38bdf8; font-weight: 800; letter-spacing: -0.5px;'>MedPulse AI</h2>", unsafe_allow_html=True)
-    st.caption("Clinical Decision Support Suite | Dr. Sheetal Jain Portal")
+    st.caption("Clinical Decision Support Suite | AI Diagnostic Portal")
     
     st.markdown("---")
     selected_disease = st.selectbox(
@@ -420,7 +420,7 @@ with st.sidebar:
 
     st.markdown("---")
     with st.expander("👤 Patient Demographics", expanded=True):
-        name = st.text_input("Full Name", "Sheetal Jain")
+        name = st.text_input("Full Name", "John Doe", help="Enter patient legal or clinical name")
         patient_id = st.text_input("Patient ID", "PX-9042")
         age = st.slider("Age (Years)", 1, 100, 45)
         gender = st.radio("Gender", ["Male", "Female", "Other"], horizontal=True)
@@ -469,7 +469,7 @@ st.markdown(f"""
             </p>
         </div>
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <span class="badge-pill">👤 Case: {patient_id} ({name})</span>
+            <span class="badge-pill">👤 Case ID: {patient_id}</span>
             <span class="badge-pill">🔮 Engine: {selected_disease}</span>
             <span class="badge-pill badge-warning">⚡ 5-Fold Validated</span>
         </div>
